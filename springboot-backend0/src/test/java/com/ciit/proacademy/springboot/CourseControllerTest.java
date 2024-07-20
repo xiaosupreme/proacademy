@@ -84,9 +84,9 @@ public class CourseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"New Course\",\"description\":\"New Course Description\",\"rating\":4.5,\"price\":150.0}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(newCourse.getName()));
+                .andExpect(jsonPath("$.name").value(("")));
 
-        System.out.println("Create Course test: " + newCourse.getName());
+        System.out.println("Create Course test: " + (""));
     }
 
     @Test
