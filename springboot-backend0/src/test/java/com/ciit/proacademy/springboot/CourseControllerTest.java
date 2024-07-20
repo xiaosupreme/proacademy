@@ -41,6 +41,12 @@ public class CourseControllerTest {
         course.setDescription("Course Description");
         course.setRating(4);
         course.setPrice(100.0);
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Test: " + course);
+        System.out.println("");
+        System.out.println("---------------------------------------------------");
+        System.out.println("");
     }
 
     @Test
@@ -50,6 +56,7 @@ public class CourseControllerTest {
         mockMvc.perform(get("/api/v1/courses"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value(course.getName()));
+        System.out.println("Get all course: " + course.getName());
     }
 
     @Test
@@ -59,17 +66,27 @@ public class CourseControllerTest {
         mockMvc.perform(get("/api/v1/courses/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(course.getName()));
+        System.out.println("Get course by ID: " + course.getName() + " Course ID: " + course.getId());
     }
 
     @Test
     void testCreateCourse() throws Exception {
-        given(courseRepository.save(any(Course.class))).willReturn(course);
+        Course newCourse = new Course();
+        newCourse.setId(2);
+        newCourse.setName("New Course");
+        newCourse.setDescription("New Course Description");
+        newCourse.setRating(4);
+        newCourse.setPrice(150.0);
+
+        given(courseRepository.save(any(Course.class))).willReturn(newCourse);
 
         mockMvc.perform(post("/api/v1/courses/create-course")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Course Name\",\"description\":\"Course Description\",\"rating\":4.5,\"price\":100.0}"))
+                        .content("{\"name\":\"New Course\",\"description\":\"New Course Description\",\"rating\":4.5,\"price\":150.0}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(course.getName()));
+                .andExpect(jsonPath("$.name").value(newCourse.getName()));
+
+        System.out.println("Create Course test: " + newCourse.getName());
     }
 
     @Test
@@ -80,6 +97,8 @@ public class CourseControllerTest {
         mockMvc.perform(delete("/api/v1/courses/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.deleted").value(true));
+                
+        System.out.println("Delete Course: " + course.getName());
     }
 
     @Test
@@ -92,5 +111,6 @@ public class CourseControllerTest {
                         .content("{\"name\":\"Updated Course Name\",\"description\":\"Updated Description\",\"rating\":5.0,\"price\":150.0}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Updated Course Name"));
+        System.out.println("Update Course test: " + course.getName());
     }
 }
