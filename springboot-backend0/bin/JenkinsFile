@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/xiaosupreme/proacademy.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Deploy to Staging') {
+            steps {
+                sh 'ssh user@staging-server "cd /path/to/deploy && ./deploy.sh"'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment to staging successful!'
+        }
+        failure {
+            echo 'Deployment to staging failed!'
+        }
+    }
+}
