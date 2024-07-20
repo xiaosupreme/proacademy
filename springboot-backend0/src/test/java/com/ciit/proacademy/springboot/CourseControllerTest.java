@@ -32,7 +32,7 @@ public class CourseControllerTest {
     private CourseRepository courseRepository;
 
     private Course course;
-//tryrrrrere
+//tryrrrreredfd
     @BeforeEach
     void setUp() {
         course = new Course();
